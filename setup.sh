@@ -47,7 +47,13 @@ echo "[INFO] Installing GitHub CLI..."
 && sudo apt update \
 && sudo apt install gh -y
 
+if [ -z "$GH_TOKEN" ]; then
+    echo "[ERROR] GH_TOKEN environment variable is not set."
+    exit 1
+fi
+
 echo "[INFO] Authenticating with GitHub..."
+echo "TOKEN: $GH_TOKEN" 
 # insert your personal access token or use a saved credentials approach
 echo "$GH_TOKEN" > token.txt
 
