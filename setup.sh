@@ -64,8 +64,8 @@ gh auth login --with-token < token.txt
 rm -f token.txt
 
 echo "[INFO] Cloning repo..."
-cd /home/pi
-gh repo clone yourusername/yourrepo repo
+cd /home/barry
+gh repo clone https://github.com/BarryAbrams/gencon2025
 cd repo
 
 echo "[INFO] Setting up Python environment..."
@@ -76,15 +76,15 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 echo "[INFO] Setting up systemd service..."
-SERVICE_NAME="yourapp"
+SERVICE_NAME="pitunes"
 cat <<EOF | sudo tee /etc/systemd/system/${SERVICE_NAME}.service
 [Unit]
 Description=Start $SERVICE_NAME script
 After=network.target
 
 [Service]
-ExecStart=/home/pi/repo/.venv/bin/python /home/pi/repo/main.py
-WorkingDirectory=/home/pi/repo
+ExecStart=/home/barry/repo/.venv/bin/python /home/barry/repo/main.py
+WorkingDirectory=/home/barry/repo
 Restart=always
 User=pi
 
