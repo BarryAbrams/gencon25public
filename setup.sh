@@ -62,6 +62,8 @@ github.com:
     git_protocol: https
 EOF
 
+rm -rf /home/pi/gencon2025
+
 echo "[INFO] Cloning repo..."
 cd /home/pi
 gh repo clone BarryAbrams/gencon2025
