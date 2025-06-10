@@ -49,7 +49,13 @@ echo "[INFO] Installing GitHub CLI..."
 
 echo "[INFO] Authenticating with GitHub..."
 # insert your personal access token or use a saved credentials approach
-echo $GH_TOKEN | gh auth login --with-token
+echo "$GH_TOKEN" > token.txt
+
+# Authenticate GitHub CLI
+gh auth login --with-token < token.txt
+
+# Clean up
+rm -f token.txt
 
 echo "[INFO] Cloning repo..."
 cd /home/pi
