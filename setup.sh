@@ -52,8 +52,9 @@ if [ -z "$GH_TOKEN" ]; then
     exit 1
 fi
 
-echo "[INFO] Authenticating with GitHub..."
+echo "[INFO] Setting up GitHub CLI non-interactively..."
 mkdir -p ~/.config/gh
+
 cat > ~/.config/gh/hosts.yml <<EOF
 github.com:
     oauth_token: $GH_TOKEN
@@ -61,8 +62,10 @@ github.com:
     git_protocol: https
 EOF
 
-echo "[DEBUG] Confirming GitHub login..."
-gh auth status || { echo "[ERROR] GitHub auth failed"; exit 1; }
+echo "[INFO] Cloning repo..."
+cd /home/pi
+gh repo clone BarryAbrams/gencon2025
+cd gencon2025
 
 echo "[INFO] Cloning repo..."
 cd /home/pi
