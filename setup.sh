@@ -22,7 +22,7 @@ else
     exit 1
 fi
 
-TOKEN_VALUE=$TOKEN_VALUE
+TOKEN_VALUE=$GH_TOKEN
 EXPORT_LINE="export GH_TOKEN=${TOKEN_VALUE}"
 
 for FILE in ~/.bashrc ~/.profile; do
@@ -36,7 +36,7 @@ done
 
 # Apply it immediately in current shell session
 export GH_TOKEN=$TOKEN_VALUE
-echo "[INFO] GH_TOKEN now available in this session"
+echo "[INFO] GH_TOKEN now available in this session $GH_TOKEN"
 
 read -p "Enter hostname: " HOSTNAME
 
