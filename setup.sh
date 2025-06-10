@@ -53,16 +53,20 @@ if [ -z "$GH_TOKEN" ]; then
 fi
 
 echo "[INFO] Authenticating with GitHub..."
-echo "$GH_TOKEN" > token.txt
-GITHUB_TOKEN="$GH_TOKEN" gh auth login --with-token < token.txt
-rm -f token.txt
+mkdir -p ~/.config/gh
+cat > ~/.config/gh/hosts.yml <<EOF
+github.com:
+    oauth_token: $GH_TOKEN
+    user: BarryAbrams
+    git_protocol: https
+EOF
 
 echo "[DEBUG] Confirming GitHub login..."
 gh auth status || { echo "[ERROR] GitHub auth failed"; exit 1; }
 
 echo "[INFO] Cloning repo..."
 cd /home/pi
-gh repo clone https://github.com/BarryAbrams/gencon2025
+gh repo clone BarryAbrams/gencon2025
 cd gencon2025
 
 echo "[INFO] Setting up Python environment..."
