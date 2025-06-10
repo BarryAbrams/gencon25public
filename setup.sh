@@ -33,8 +33,8 @@ echo "[INFO] Setting config.txt..."
 echo "$OVERLAY" | sudo tee -a /boot/firmware/config.txt
 
 echo "[INFO] Creating /boot/MEDIA..."
-sudo mkdir -p /boot/MEDIA
-sudo chmod 777 /boot/MEDIA
+sudo mkdir -p /bootfs/MEDIA
+sudo chmod 777 /bootfs/MEDIA
 
 echo "[INFO] Installing GitHub CLI..."
 (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
@@ -55,16 +55,16 @@ fi
 echo "[INFO] Authenticating with GitHub..."
 echo "TOKEN: $GH_TOKEN" 
 # insert your personal access token or use a saved credentials approach
-echo "$GH_TOKEN" > /home/barry/token.txt
+echo "$GH_TOKEN" > /home/pi/token.txt
 
 # Authenticate GitHub CLI
-gh auth login --with-token < /home/barry/token.txt
+gh auth login --with-token < /home/pi/token.txt
 
 # Clean up
 rm -f token.txt
 
 echo "[INFO] Cloning repo..."
-cd /home/barry
+cd /home/pi
 gh repo clone https://github.com/BarryAbrams/gencon2025
 cd gencon2025
 
@@ -83,8 +83,8 @@ Description=Start $SERVICE_NAME script
 After=network.target
 
 [Service]
-ExecStart=/home/barry/repo/.venv/bin/python /home/barry/repo/main.py
-WorkingDirectory=/home/barry/repo
+ExecStart=/home/pi/repo/.venv/bin/python /home/pi/repo/main.py
+WorkingDirectory=/home/pi/repo
 Restart=always
 User=pi
 
