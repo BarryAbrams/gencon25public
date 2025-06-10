@@ -53,15 +53,12 @@ if [ -z "$GH_TOKEN" ]; then
 fi
 
 echo "[INFO] Authenticating with GitHub..."
-echo "TOKEN: $GH_TOKEN" 
-# insert your personal access token or use a saved credentials approach
-echo "$GH_TOKEN" > /home/pi/token.txt
-
-# Authenticate GitHub CLI
-gh auth login --with-token < /home/pi/token.txt
-
-# Clean up
+echo "$GH_TOKEN" > token.txt
+GITHUB_TOKEN="$GH_TOKEN" gh auth login --with-token < token.txt
 rm -f token.txt
+
+echo "[DEBUG] Confirming GitHub login..."
+gh auth status || { echo "[ERROR] GitHub auth failed"; exit 1; }
 
 echo "[INFO] Cloning repo..."
 cd /home/pi
