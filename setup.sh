@@ -66,7 +66,7 @@ rm -f token.txt
 echo "[INFO] Cloning repo..."
 cd /home/barry
 gh repo clone https://github.com/BarryAbrams/gencon2025
-cd repo
+cd gencon2025
 
 echo "[INFO] Setting up Python environment..."
 sudo apt install -y python3-venv
