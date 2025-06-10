@@ -52,8 +52,8 @@ echo "[INFO] Setting config.txt..."
 echo "$OVERLAY" | sudo tee -a /boot/firmware/config.txt
 
 echo "[INFO] Creating /boot/MEDIA..."
-sudo mkdir -p /bootfs/MEDIA
-sudo chmod 777 /bootfs/MEDIA
+sudo mkdir -p /boot/MEDIA
+sudo chmod 777 /boot/MEDIA
 
 echo "[INFO] Installing GitHub CLI..."
 (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
@@ -120,3 +120,5 @@ sudo systemctl enable ${SERVICE_NAME}.service
 sudo systemctl start ${SERVICE_NAME}.service
 
 echo "[INFO] Setup complete."
+
+sudo reboot
