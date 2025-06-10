@@ -55,10 +55,10 @@ fi
 echo "[INFO] Authenticating with GitHub..."
 echo "TOKEN: $GH_TOKEN" 
 # insert your personal access token or use a saved credentials approach
-echo "$GH_TOKEN" > token.txt
+echo "$GH_TOKEN" > /home/barry/token.txt
 
 # Authenticate GitHub CLI
-gh auth login --with-token < token.txt
+gh auth login --with-token < /home/barry/token.txt
 
 # Clean up
 rm -f token.txt
