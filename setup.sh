@@ -47,6 +47,8 @@ echo "[INFO] Installing GitHub CLI..."
 && sudo apt update \
 && sudo apt install gh -y
 
+sudo apt-get install python3-dev python3-rpi.gpio -y
+
 if [ -z "$GH_TOKEN" ]; then
     echo "[ERROR] GH_TOKEN environment variable is not set."
     exit 1
@@ -73,8 +75,8 @@ echo "[INFO] Setting up Python environment..."
 sudo apt install -y python3-venv
 python3 -m venv .venv
 source .venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
+/home/pi/gencon2025/.venv/bin/pip3 install --upgrade pip
+/home/pi/gencon2025/.venv/bin/pip3 install -r /home/pi/gencon2025/requirements.txt
 
 echo "[INFO] Setting up systemd service..."
 SERVICE_NAME="pitunes"
