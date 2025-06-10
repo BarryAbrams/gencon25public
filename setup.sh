@@ -67,11 +67,6 @@ cd /home/pi
 gh repo clone BarryAbrams/gencon2025
 cd gencon2025
 
-echo "[INFO] Cloning repo..."
-cd /home/pi
-gh repo clone BarryAbrams/gencon2025
-cd gencon2025
-
 echo "[INFO] Setting up Python environment..."
 sudo apt install -y python3-venv
 python3 -m venv .venv
