@@ -50,6 +50,7 @@ sudo sed -i "s/127.0.1.1.*/127.0.1.1\t$HOSTNAME/" /etc/hosts
 
 echo "[INFO] Setting config.txt..."
 echo "$OVERLAY" | sudo tee -a /boot/firmware/config.txt
+echo "dtparam=spi=on" | sudo tee -a /boot/firmware/config.txt
 
 echo "[INFO] Creating /boot/MEDIA..."
 sudo mkdir -p /boot/MEDIA
