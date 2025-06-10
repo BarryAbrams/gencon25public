@@ -22,6 +22,22 @@ else
     exit 1
 fi
 
+TOKEN_VALUE=$TOKEN_VALUE
+EXPORT_LINE="export GH_TOKEN=${TOKEN_VALUE}"
+
+for FILE in ~/.bashrc ~/.profile; do
+    if ! grep -Fxq "$EXPORT_LINE" "$FILE"; then
+        echo "[INFO] Adding GH_TOKEN to $FILE"
+        echo "$EXPORT_LINE" >> "$FILE"
+    else
+        echo "[INFO] GH_TOKEN already present in $FILE"
+    fi
+done
+
+# Apply it immediately in current shell session
+export GH_TOKEN=$TOKEN_VALUE
+echo "[INFO] GH_TOKEN now available in this session"
+
 read -p "Enter hostname: " HOSTNAME
 
 echo "[INFO] Setting hostname..."
