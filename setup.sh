@@ -67,6 +67,7 @@ echo "[INFO] Installing GitHub CLI..."
 && sudo apt install gh -y
 
 sudo apt-get install python3-dev python3-rpi.gpio -y
+sudo apt install mpv -y 
 
 if [ -z "$GH_TOKEN" ]; then
     echo "[ERROR] GH_TOKEN environment variable is not set."
