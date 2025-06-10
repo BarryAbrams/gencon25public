@@ -22,20 +22,23 @@ else
     exit 1
 fi
 
-TOKEN_VALUE=$GH_TOKEN
-EXPORT_LINE="export GH_TOKEN=${TOKEN_VALUE}"
+set -e
 
-for FILE in ~/.bashrc ~/.profile; do
-    if ! grep -Fxq "$EXPORT_LINE" "$FILE"; then
-        echo "[INFO] Adding GH_TOKEN to $FILE"
-        echo "$EXPORT_LINE" >> "$FILE"
-    else
-        echo "[INFO] GH_TOKEN already present in $FILE"
-    fi
-done
+# Load env vars (like GH_TOKEN) if available
+[ -f ~/.env ] && source ~/.env
 
-# Apply it immediately in current shell session
-export GH_TOKEN=$TOKEN_VALUE
+if [ -z "$GH_TOKEN" ]; then
+    echo "[ERROR] GH_TOKEN is not set."
+    exit 1
+fi
+
+# Save it to ~/.env for future sessions (only if not already there)
+if ! grep -q "GH_TOKEN=" ~/.env 2>/dev/null; then
+    echo "GH_TOKEN=$GH_TOKEN" > ~/.env
+    chmod 600 ~/.env
+fi
+
+export GH_TOKEN=$GH_TOKEN
 echo "[INFO] GH_TOKEN now available in this session $GH_TOKEN"
 
 read -p "Enter hostname: " HOSTNAME
