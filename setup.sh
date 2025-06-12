@@ -48,9 +48,21 @@ sudo hostnamectl set-hostname "$HOSTNAME"
 echo "$HOSTNAME" | sudo tee /etc/hostname
 sudo sed -i "s/127.0.1.1.*/127.0.1.1\t$HOSTNAME/" /etc/hosts
 
-echo "[INFO] Setting config.txt..."
-echo "$OVERLAY" | sudo tee -a /boot/firmware/config.txt
-echo "dtparam=spi=on" | sudo tee -a /boot/firmware/config.txt
+# Ensure overlay is set (but not duplicated)
+if ! grep -qF "$OVERLAY" /boot/firmware/config.txt; then
+    echo "$OVERLAY" | sudo tee -a /boot/firmware/config.txt
+fi
+
+echo "[INFO] Updating /boot/firmware/config.txt..."
+# Comment out dtparam=audio=on if present
+sudo sed -i 's/^\s*\(dtparam=audio=on\)/# \1/' /boot/firmware/config.txt
+
+# Ensure dtparam=spi=on is uncommented or added
+if grep -q '^\s*#\s*dtparam=spi=on' /boot/firmware/config.txt; then
+    sudo sed -i 's/^\s*#\s*dtparam=spi=on/dtparam=spi=on/' /boot/firmware/config.txt
+elif ! grep -q '^\s*dtparam=spi=on' /boot/firmware/config.txt; then
+    echo "dtparam=spi=on" | sudo tee -a /boot/firmware/config.txt
+fi
 
 echo "[INFO] Creating /boot/MEDIA..."
 sudo mkdir -p /boot/MEDIA
