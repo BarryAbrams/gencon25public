@@ -119,8 +119,8 @@ Description=Start $SERVICE_NAME script
 After=network.target
 
 [Service]
-ExecStart=/home/pi/gencon2025/.venv/bin/python3 /home/gencon2025/repo/main.py
-WorkingDirectory=/home/gencon2025/repo
+ExecStart=/home/pi/gencon2025/.venv/bin/python3 /home/pi/gencon2025/interface.py
+WorkingDirectory=/home/pi/gencon2025
 Restart=always
 User=pi
 
