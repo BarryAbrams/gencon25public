@@ -123,6 +123,8 @@ ExecStart=/home/pi/gencon2025/.venv/bin/python3 /home/pi/gencon2025/interface.py
 WorkingDirectory=/home/pi/gencon2025
 Restart=always
 User=pi
+TimeoutStopSec=3
+KillSignal=SIGKILL
 
 [Install]
 WantedBy=multi-user.target
