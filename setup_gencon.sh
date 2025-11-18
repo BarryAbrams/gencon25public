@@ -97,31 +97,30 @@ github.com:
     git_protocol: https
 EOF
 
-rm -rf /home/pi/parcadia
+rm -rf /home/pi/gencon2025
 
 echo "[INFO] Cloning repo..."
 cd /home/pi
-gh repo clone BarryAbrams/parcadia_architecture
-mv parcadia_architecture /home/pi/parcadia
-cd parcadia
+gh repo clone BarryAbrams/gencon2025
+cd gencon2025
 
 echo "[INFO] Setting up Python environment..."
 sudo apt install -y python3-venv
 python3 -m venv .venv
 source .venv/bin/activate
-/home/pi/parcadia/.venv/bin/pip3 install --upgrade pip
-/home/pi/parcadia/.venv/bin/pip3 install -r /home/pi/parcadia/requirements.txt
+/home/pi/gencon2025/.venv/bin/pip3 install --upgrade pip
+/home/pi/gencon2025/.venv/bin/pip3 install -r /home/pi/gencon2025/requirements.txt
 
 echo "[INFO] Setting up systemd service..."
-SERVICE_NAME="parcadia"
+SERVICE_NAME="pitunes"
 cat <<EOF | sudo tee /etc/systemd/system/${SERVICE_NAME}.service
 [Unit]
 Description=Start $SERVICE_NAME script
 After=network.target
 
 [Service]
-ExecStart=/home/pi/parcadia/.venv/bin/python3 /home/pi/parcadia/holes/app.py
-WorkingDirectory=/home/pi/parcadia
+ExecStart=/home/pi/gencon2025/.venv/bin/python3 /home/pi/gencon2025/interface.py
+WorkingDirectory=/home/pi/gencon2025
 Restart=always
 User=pi
 TimeoutStopSec=3
