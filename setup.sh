@@ -57,11 +57,37 @@ echo "[INFO] Updating /boot/firmware/config.txt..."
 # Comment out dtparam=audio=on if present
 sudo sed -i 's/^\s*\(dtparam=audio=on\)/# \1/' /boot/firmware/config.txt
 
+CONFIG="/boot/firmware/config.txt"
+
 # Ensure dtparam=spi=on is uncommented or added
-if grep -q '^\s*#\s*dtparam=spi=on' /boot/firmware/config.txt; then
-    sudo sed -i 's/^\s*#\s*dtparam=spi=on/dtparam=spi=on/' /boot/firmware/config.txt
-elif ! grep -q '^\s*dtparam=spi=on' /boot/firmware/config.txt; then
-    echo "dtparam=spi=on" | sudo tee -a /boot/firmware/config.txt
+if grep -q '^\s*#\s*dtparam=spi=on' "$CONFIG"; then
+    sudo sed -i 's/^\s*#\s*dtparam=spi=on/dtparam=spi=on/' "$CONFIG"
+elif ! grep -q '^\s*dtparam=spi=on' "$CONFIG"; then
+    echo "dtparam=spi=on" | sudo tee -a "$CONFIG"
+fi
+
+
+### ---- Add overlay: mcp2515-can0 ---- ###
+MCP_LINE="dtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25,spimaxfrequency=1000000"
+
+# If commented out → uncomment
+if grep -q "^\s*#\s*$MCP_LINE" "$CONFIG"; then
+    sudo sed -i "s|^\s*#\s*$MCP_LINE|$MCP_LINE|" "$CONFIG"
+# If not present at all → append
+elif ! grep -q "^\s*$MCP_LINE" "$CONFIG"; then
+    echo "$MCP_LINE" | sudo tee -a "$CONFIG"
+fi
+
+
+### ---- Add overlay: sc16is752-spi1 ---- ###
+SC16_LINE="dtoverlay=sc16is752-spi1,int_pin=24"
+
+# If commented → uncomment
+if grep -q "^\s*#\s*$SC16_LINE" "$CONFIG"; then
+    sudo sed -i "s|^\s*#\s*$SC16_LINE|$SC16_LINE|" "$CONFIG"
+# If missing → append
+elif ! grep -q "^\s*$SC16_LINE" "$CONFIG"; then
+    echo "$SC16_LINE" | sudo tee -a "$CONFIG"
 fi
 
 echo "[INFO] Creating /boot/MEDIA..."
@@ -75,7 +101,7 @@ echo "[INFO] Installing GitHub CLI..."
 && sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg < $out > /dev/null \
 && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
 && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
-   | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+| sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
 && sudo apt update \
 && sudo apt install gh -y
 
@@ -110,13 +136,12 @@ sudo apt install -y python3-venv
 python3 -m venv .venv
 source .venv/bin/activate
 /home/pi/parcadia/.venv/bin/pip3 install --upgrade pip
-/home/pi/parcadia/.venv/bin/pip3 install -r /home/pi/parcadia/requirements.txt
+/home/pi/parcadia/.venv/bin/pip3 install -r /home/pi/parcadia/holes/requirements.txt
 
 echo "[INFO] Setting up systemd service..."
-SERVICE_NAME="parcadia"
-cat <<EOF | sudo tee /etc/systemd/system/${SERVICE_NAME}.service
+cat <<EOF | sudo tee /etc/systemd/system/parcadia.service
 [Unit]
-Description=Start $SERVICE_NAME script
+Description=Start parcadia script
 After=network.target
 
 [Service]
@@ -133,8 +158,8 @@ EOF
 
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
-sudo systemctl enable ${SERVICE_NAME}.service
-sudo systemctl start ${SERVICE_NAME}.service
+sudo systemctl enable parcadia.service
+sudo systemctl start parcadia.service
 
 echo "[INFO] Setup complete."
 
