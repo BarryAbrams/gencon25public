@@ -16,8 +16,6 @@ if echo "$MODEL" | grep -q "Raspberry Pi 5"; then
     OVERLAY="dtoverlay=hifiberry-dacplus,slave"
 elif echo "$MODEL" | grep -q "Raspberry Pi 4"; then
     OVERLAY="dtoverlay=hifiberry-dacplus"
-elif echo "$MODEL" | grep -q "Raspberry Pi Zero 2"; then
-    
 else
     echo "[ERROR] Unsupported Pi model: $MODEL"
     echo "        Only Raspberry Pi 4 and 5 are supported."
