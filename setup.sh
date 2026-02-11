@@ -3,11 +3,11 @@ set -e
 
 echo "[INFO] Checking hardware..."
 
-if ! grep -q "Raspberry Pi" /proc/device-tree/model 2>/dev/null; then
-    echo "[ERROR] This script is intended for Raspberry Pi devices only."
-    echo "        Detected: $(tr -d '\0' < /proc/device-tree/model 2>/dev/null || echo 'Unknown')"
-    exit 1
-fi
+# if ! grep -q "Raspberry Pi" /proc/device-tree/model 2>/dev/null; then
+#     echo "[ERROR] This script is intended for Raspberry Pi devices only."
+#     echo "        Detected: $(tr -d '\0' < /proc/device-tree/model 2>/dev/null || echo 'Unknown')"
+#     exit 1
+# fi
 
 MODEL=$(tr -d '\0' < /proc/device-tree/model)
 echo "[INFO] Detected model: $MODEL"
