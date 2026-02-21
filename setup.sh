@@ -19,7 +19,7 @@ elif echo "$MODEL" | grep -q "Raspberry Pi 4"; then
 else
     echo "[ERROR] Unsupported Pi model: $MODEL"
     echo "        Only Raspberry Pi 4 and 5 are supported."
-    exit 1
+    # exit 1
 fi
 
 set -e
